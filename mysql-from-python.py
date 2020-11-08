@@ -229,6 +229,26 @@
 
 # Delete many video class
 # because table will have a cloumn datetime
+# import pymysql
+# # connect to the database
+# connection = pymysql.connect(host='localhost',
+#                              db='Chinook')
+# try:
+#     # Run a query for test
+#     with connection.cursor() as cursor:
+#         row = cursor.executemany("DELETE FROM Friends WHERE name = %s;",
+#                                   ('bob','Jim', 'Fred'))
+#         connection.commit()
+# finally:
+#     # Close the connection, regardless of
+#     # whether the above was sucessful
+#     connection.close()
+
+# -------------------------------------------#
+
+# Update video class
+
+# because table will have a cloumn datetime
 import pymysql
 # connect to the database
 connection = pymysql.connect(host='localhost',
@@ -236,7 +256,18 @@ connection = pymysql.connect(host='localhost',
 try:
     # Run a query for test
     with connection.cursor() as cursor:
-        row = cursor.executemany("DELETE FROM Friends WHERE name = %s;", ('bob','Jim', 'Fred'))
+        # hard coded
+        #  cursor.execute("UPDATE Friends SET age = 22
+        # WHERE name in ('Bob', 'Fred')")
+
+        # not hard coded
+        list_of_names = ['Fred', 'Bob']
+        # Prepara a string with the same number
+        # of Placeholders as in list_of_names
+        format_string = ','.join(['%s'] * len(list_of_names))
+        # format_string is equal to (%s,%s) if list has 2 items
+        # format_string is equal to (%s,%s,%s) if list has 3 items
+        cursor.execute("DELETE FROM Friends WHERE name in ({});".format(format_string), list_of_names)
         connection.commit()
 finally:
     # Close the connection, regardless of
